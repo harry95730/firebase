@@ -58,21 +58,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         shrinkWrap: true,
                         itemCount: lis.length,
                         itemBuilder: (context, index) {
-                          if (widget.harry != lis[index]) {
-                            return ListTile(
-                              onTap: () {
-                                widget.harry = lis[index];
-                                Navigator.pop(context);
-                              },
-                              title: Text(lis[index].displayname),
-                              subtitle: Text(lis[index].email),
-                              leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                lis[index].photourl,
-                              )),
-                            );
-                          }
-                          return Container();
+                          return widget.harry.email != lis[index].email
+                              ? ListTile(
+                                  onTap: () {
+                                    widget.harry = lis[index];
+                                    Navigator.pop(context);
+                                  },
+                                  title: Text(lis[index].displayname),
+                                  subtitle: Text(lis[index].email),
+                                  leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                    lis[index].photourl,
+                                  )),
+                                )
+                              : Container();
                         },
                       ),
                     ),
