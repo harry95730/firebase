@@ -39,7 +39,7 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
                 onPressed: () {
                   Handler().handleSignIn(context);
                 },
-                child: const Text('Sign In with Google'),
+                child: const Text('Sign In with Gooogle'),
               ),
             ),
           )
