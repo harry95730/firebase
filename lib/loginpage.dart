@@ -1,13 +1,13 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, must_be_immutable
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/accessdb.dart';
 import 'package:flutter_application_3/classhandler.dart';
+import 'package:flutter_application_3/userclass.dart';
 
 class LoginScreen extends StatefulWidget {
-  final User? harry;
-  const LoginScreen({super.key, required this.harry});
+  Usr harry;
+  LoginScreen({super.key, required this.harry});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -40,19 +40,39 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Material(
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        title: Text(widget.harry.displayname),
+                        subtitle: Text(widget.harry.email),
+                        leading: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                          widget.harry.photourl,
+                        )),
+                      ),
+                    ),
+                    Material(
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: lis.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(lis[index].displayname),
-                            subtitle: Text(lis[index].email),
-                            leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                              lis[index].photourl,
-                            )),
-                          );
+                          if (widget.harry != lis[index]) {
+                            return ListTile(
+                              onTap: () {
+                                widget.harry = lis[index];
+                                Navigator.pop(context);
+                              },
+                              title: Text(lis[index].displayname),
+                              subtitle: Text(lis[index].email),
+                              leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                lis[index].photourl,
+                              )),
+                            );
+                          }
+                          return Container();
                         },
                       ),
                     ),
@@ -74,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (res != null) {
       await Handler().handleSignIn(context);
     } else {
-      print(res);
+      setState(() {});
     }
   }
 
@@ -87,17 +107,16 @@ class _LoginScreenState extends State<LoginScreen> {
         centerTitle: true,
         title: const Text('Google'),
         actions: [
-          if (widget.harry != null)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () => dialoguebox(),
-                child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                  widget.harry!.photoURL!,
-                )),
-              ),
-            )
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () => dialoguebox(),
+              child: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                widget.harry.photourl,
+              )),
+            ),
+          )
         ],
       ),
     );

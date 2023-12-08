@@ -38,11 +38,14 @@ class Handler {
           await Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => LoginScreen(harry: user)));
+                  builder: (context) => LoginScreen(harry: harr)));
         }
       }
     } catch (error) {
-      print('Google Sign-In Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(error.toString()),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
@@ -64,14 +67,22 @@ class Handler {
         final User? user = userCredential.user;
 
         if (user != null) {
+          Usr harr = Usr(
+              photourl: user.photoURL!,
+              name: user.uid,
+              email: user.email!,
+              displayname: user.displayName!);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => LoginScreen(harry: user)));
+                  builder: (context) => LoginScreen(harry: harr)));
         }
       }
     } catch (error) {
-      print('Google Sign-In Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(error.toString()),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 }
